@@ -1,3 +1,4 @@
+import 'package:firebaseauthenticationsystem/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -8,13 +9,13 @@ class OfflineScreen extends StatelessWidget {
       body: Stack(
         children: <Widget>[
           Container(
-            color: Colors.white,
+            color: backgroundColor,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SpinKitWave(
-                color: Colors.lightBlueAccent,
+                color: Colors.green,
                 size: 40.0,
               ),
               SizedBox(height: 20,),

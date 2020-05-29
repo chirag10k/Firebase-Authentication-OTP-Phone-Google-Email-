@@ -1,7 +1,6 @@
 import 'package:firebaseauthenticationsystem/screens/authentication/phone_login_screen.dart';
 import 'package:firebaseauthenticationsystem/services/auth_service.dart';
 import 'package:firebaseauthenticationsystem/shared/constants.dart';
-import 'package:firebaseauthenticationsystem/shared/loading.dart';
 import 'package:firebaseauthenticationsystem/shared/signin_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

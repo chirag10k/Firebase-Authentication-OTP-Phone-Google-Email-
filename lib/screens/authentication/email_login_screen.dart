@@ -5,6 +5,7 @@ import 'package:firebaseauthenticationsystem/services/auth_service.dart';
 import 'package:firebaseauthenticationsystem/shared/constants.dart';
 import 'package:firebaseauthenticationsystem/shared/signin_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class EmailLoginScreen extends StatefulWidget {
@@ -19,10 +20,12 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   final AuthService _authService = AuthService();
   PageController controller;
   final _formKey = GlobalKey<FormState>();
+  bool isLoading;
 
   @override
   void initState() {
     super.initState();
+    isLoading = false;
     controller = PageController(initialPage: 0,);
   }
 
@@ -178,12 +181,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                           ),
                         ),
                         SizedBox(height: 30,),
-                        OutlineButton(
+                        isLoading ? SpinKitRing(color: Colors.green): OutlineButton(
                           borderSide: BorderSide(
                               color: Colors.white
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
+                              setState(() => isLoading = true);
                               FocusScope.of(context).unfocus();
                               print('validated');
                               bool emailUsed = await _authService
@@ -205,7 +209,9 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                                 );
                               } else {
                                 _authService.signInWithEmailAndPassword(
-                                    _email, _password);
+                                    _email, _password).whenComplete(() {
+                                      setState(() => isLoading = false);
+                                });
                               }
                             }
                             else

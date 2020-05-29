@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../services/auth_service.dart';
 import '../../shared/constants.dart';
 
@@ -12,7 +13,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
-  bool loading = false;
+  bool isLoading = false;
   bool otpVerified = false;
 
   //text field state
@@ -20,6 +21,11 @@ class _SignupScreenState extends State<SignupScreen> {
   String _password = '';
   String _phoneNo = '';
   String error = '';
+
+  @override
+  void initState() {
+    isLoading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,13 +130,14 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                   ),
                   SizedBox(height: 20,),
-                  OutlineButton(
+                  isLoading ? SpinKitRing(color: Colors.green): OutlineButton(
                     borderSide: BorderSide(
                         color: Colors.white
                     ),
                     onPressed: () async {
                       if(_formKey.currentState.validate()){
                         FocusScope.of(context).unfocus();
+                        setState(() => isLoading = true);
                         print('validated');
                         bool emailUsed = await _authService.getUserFromEmail(_email);
                         print(emailUsed);
@@ -147,7 +154,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             }
                           );
                         } else {
-                          _authService.createUserWithEmailAndPassword(_email, _password);
+                          _authService.createUserWithEmailAndPassword(_email, _password).whenComplete(() {
+                            setState(() => isLoading = false);
+                          });
                         }
                       }
                       else
